@@ -1,0 +1,12 @@
+HISTFILE=~/.zsh_history
+HISTSIZE={{ config.zsh.history_size }}
+SAVEHIST=$HISTSIZE
+
+{# Removes older duplicate entries from history #}
+setopt hist_ignore_all_dups
+{# Removes superfluous blanks from history items #}
+setopt hist_reduce_blanks
+{# Saves history entries as soon as they are entered #}
+setopt inc_append_history
+{# Shares history between different instances of the shell #}
+setopt share_history

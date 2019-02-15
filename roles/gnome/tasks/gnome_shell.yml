@@ -1,0 +1,40 @@
+---
+
+- name: Disabling GNOME Shell top left hot corner
+  aur:
+    name: gnome-shell-extension-no-topleft-hot-corner
+    user: "{{ system.user.name }}"
+    dir: "/home/{{ system.user.name }}/{{ config.aur.dir }}"
+  when: "config.gnome.gnome_shell.top_left_hot_corner_disabled"
+  tags:
+    - aur
+
+- name: Enabling GNOME Shell top left hot corner
+  pacman:
+    name: gnome-shell-extension-no-topleft-hot-corner
+    state: absent
+  when: "not config.gnome.gnome_shell.top_left_hot_corner_disabled"
+
+- name: Installing GNOME Shell Extensions support
+  pacman:
+    name: "gnome-shell-extensions"
+    state: "present"
+  when: "config.gnome.gnome_shell.extensions_support"
+
+- name: Installing GNOME Shell extensions (via aur)
+  aur:
+    name: "{{ item }}"
+    user: "{{ system.user.name }}"
+    dir: "/home/{{ system.user.name }}/{{ config.aur.dir }}"
+  with_items:
+    - gnome-shell-extension-arc-menu-git
+  when: "config.gnome.gnome_shell.extensions_support"
+
+- name: Install Qogir GTK3 theme
+  aur:
+    name: qogir-gtk-theme-git
+    user: "{{ system.user.name }}"
+    dir: "/home/{{ system.user.name }}/{{ config.aur.dir }}"
+
+- name: Setup Qogir theme
+  shell: "gsettings set org.gnome.desktop.wm.preferences button-layout appmenu:minimize,maximize,close"

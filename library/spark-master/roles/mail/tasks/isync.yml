@@ -1,0 +1,5 @@
+---
+- name: Install isync
+  pacman: name=isync state=present
+  tags:
+    - isync

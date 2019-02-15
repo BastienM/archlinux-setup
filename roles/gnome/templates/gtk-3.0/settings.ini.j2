@@ -1,0 +1,11 @@
+[Settings]
+{% if config.gnome.theme.name is defined %}
+gtk-icon-theme-name = {{ config.gnome.theme.name }}
+{% endif %}
+{% if config.gnome.icon.name is defined %}
+gtk-theme-name = {{ config.gnome.icon.name }}
+{% endif %}
+{% if config.gnome.font.name is defined %}
+gtk-font-name = {{ config.gnome.font.name }}
+{% endif %}
+gtk-application-prefer-dark-theme = {% if config.gnome.gtk.dark_variant %}true{% else %}false{% endif %}

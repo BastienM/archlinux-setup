@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+# HTTP-based connectivity check
+[connectivity]
+{% if system.network.manager.conn_check.uri is defined %}
+uri={{ system.network.manager.conn_check.uri }}
+{% endif %}
+{% if system.network.manager.conn_check.interval is defined %}
+interval={{ system.network.manager.conn_check.interval }}
+{% endif %}
+{% if system.network.manager.conn_check.reponse is defined %}
+response={{ system.network.manager.conn_check.response }}
+{% endif %}

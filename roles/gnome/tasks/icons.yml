@@ -1,0 +1,13 @@
+---
+
+- name: Install Korla icons set
+  aur:
+    name: korla-icon-theme
+    user: "{{ system.user.name }}"
+    dir: "/home/{{ system.user.name }}/{{ config.aur.dir }}"
+
+- name: Install FlatRemix icons set
+  aur:
+    name: flat-remix-git
+    user: "{{ system.user.name }}"
+    dir: "/home/{{ system.user.name }}/{{ config.aur.dir }}"

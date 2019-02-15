@@ -1,0 +1,8 @@
+---
+
+- name: Install editors
+  pacman:
+    name: "{{ packages.editors }}"
+    state: present
+
+# - include: atom.yml

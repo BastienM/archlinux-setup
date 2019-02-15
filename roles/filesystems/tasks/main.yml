@@ -1,0 +1,6 @@
+---
+
+- name: Install filesystem packages
+  pacman:
+    name: "{{ packages.fs }}"
+    state: present

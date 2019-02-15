@@ -1,0 +1,17 @@
+---
+
+- name: Install hdparm
+  pacman:
+    name: hdparm
+    state: present
+
+- name: Check for TRIM support
+  shell: "hdparm -I {{ system.storage.os.name }} | grep TRIM"
+  register: hdparm
+
+- name: Enable and start weekly filesystem TRIM timer
+  service:
+    name: fstrim.timer
+    enabled: yes
+    state: started
+  when: "hdparm.rc == 0"

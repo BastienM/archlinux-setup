@@ -1,0 +1,71 @@
+---
+
+- name: Install Simple Desktop Display Manager (SDDM)
+  pacman:
+    name: sddm
+    state: present
+
+- name: Enable SDDM
+  service:
+    name: sddm.service
+    enabled: yes
+
+- name: Create SDDM config directory
+  file:
+    path: /etc/sddm.conf.d
+    state: directory
+  tags:
+    - packages
+
+- name: Copy SDDM default config file
+  copy:
+    src: /usr/lib/sddm/sddm.conf.d/default.conf
+    dest: /etc/sddm.conf.d/default.conf
+    mode: preserve
+  tags:
+    - packages
+
+- name: Push hidpi configuration
+  copy:
+    src: hidpi.conf
+    dest: /etc/sddm.conf.d/hidpi.conf
+
+- name: Install Chili theme
+  aur:
+    name: chili-sddm-theme
+    user: "{{ system.user.name }}"
+    dir: "/home/{{ system.user.name }}/{{ config.aur.dir }}"
+
+- name: Enable Chili as default theme
+  replace:
+    path: /etc/sddm.conf.d/default.conf
+    regexp: '{{ item.regexp }}'
+    replace: '{{ item.replace }}'
+  with_items:
+    - regexp: '\[Theme\]\W[a-zA-Z#].*\W(Current=)'
+      replace: '\g<1>chili'
+
+- name: Download lockscreen background
+  get_url:
+    url: "{{ config.sddm.chili.background }}"
+    dest: /etc/sddm.conf.d/background.jpg
+    mode: 0444
+
+- name: Configure Chili theme
+  replace:
+    path: /usr/share/sddm/themes/chili/theme.conf
+    regexp: '{{ item.regexp }}'
+    replace: '{{ item.replace }}'
+  with_items:
+    - regexp: '^(background=)\w.*$'
+      replace: '\g<1>/etc/sddm.conf.d/background.jpg'
+    - regexp: '^(ScreenWidth=)\w.*$'
+      replace: '\g<1>{{ config.sddm.chili.screen.width }}'
+    - regexp: '^(ScreenHeight=)\w.*$'
+      replace: '\g<1>{{ config.sddm.chili.screen.height }}'
+    # - regexp: '^(translationReboot=)\w.*$'
+    #   replace: '\g<1>{{ config.sddm.chili.translation.reboot }}'
+    # - regexp: '^(translationSuspend=)\w.*$'
+    #   replace: '\g<1>{{ config.sddm.chili.translation.suspend }}'
+    # - regexp: '^(translationPowerOff=)\w.*$'
+    #   replace: '\g<1>{{ config.sddm.chili.translation.poweroff }}'

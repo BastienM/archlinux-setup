@@ -1,0 +1,8 @@
+---
+
+- name: Install tilix
+  pacman:
+    name: tilix
+    state: present
+  tags:
+    - tilix

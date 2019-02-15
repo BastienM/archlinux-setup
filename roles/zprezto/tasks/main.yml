@@ -1,0 +1,95 @@
+---
+
+- name: Install Zprezto
+  git:
+    repo: https://github.com/sorin-ionescu/prezto.git
+    dest: "/home/{{ system.user.name }}/.zprezto"
+    version: master
+    force: true
+  become: yes
+  become_user: "{{ system.user.name }}"
+
+- name: Install Zprezto-contrib
+  git:
+    repo: https://github.com/belak/prezto-contrib.git
+    dest: "/home/{{ system.user.name }}/.zprezto/contrib"
+    version: master
+    force: true
+  become: yes
+  become_user: "{{ system.user.name }}"
+
+- name: Install fzf-prezto
+  git:
+    repo: https://github.com/piec/fzf-prezto.git
+    dest: "/home/{{ system.user.name }}/.zprezto/modules/fzf"
+    version: master
+    force: true
+  become: yes
+  become_user: "{{ system.user.name }}"
+
+- name: Add symbolic link dotfiles
+  file:
+    src: "/home/{{ system.user.name }}/.zprezto/runcoms/{{ item }}"
+    dest: "/home/{{ system.user.name }}/.{{ item }}"
+    state: link
+    owner: "{{ system.user.name }}"
+  with_items:
+    - zlogin
+    - zlogout
+    - zpreztorc
+    - zprofile
+    - zshenv
+
+- name: Push custom .zshrc file
+  copy:
+    src: zshrc
+    dest: "/home/{{ system.user.name }}/.zshrc"
+
+- name: Make directory .zsh.d
+  file:
+    path: "/home/{{ system.user.name }}/.zsh.d"
+    state: directory
+    owner: "{{ system.user.name }}"
+
+- name: Push custom history configuration file
+  template:
+    src: zsh.d/history.j2
+    dest: "/home/{{ system.user.name }}/.zsh.d/history"
+  when: "config.zsh.history_size is defined"
+
+- name: Push custom configuration files
+  synchronize:
+    src: zsh.d/
+    dest: "/home/{{ system.user.name }}/.zsh.d/"
+
+- name: Customizing zpreztorc
+  replace:
+    path: "/home/{{ system.user.name }}/.zpreztorc"
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+  with_items:
+    -
+      regexp: '(zstyle.*prezto:load.*pmodule(?!-).*\n)((?:\s{2}\S\w+\S\W{2}\n){8})'
+      replace: "\\g<1>\\g<2>  'contrib-prompt' \\\n  'syntax-highlighting' \\\n  'git' \\\n  'docker' \\\n"
+    -
+      regexp: '^#\W(zstyle.*prezto:module:pacman.*frontend.*\S)yaourt(\S)$'
+      replace: '\1{{ config.zsh.pacman_frontend }}\2'
+    -
+      regexp: '^(zstyle.*prezto:module:prompt.*theme.*\S)sorin(\S)$'
+      replace: '\1{{ config.zsh.prompt_theme }}\2'
+    -
+      regexp: '^#\W(zstyle.*prezto:module:terminal.*auto-title.*)$'
+      replace: '\1'
+    -
+      regexp: '^#\W(zstyle.*prezto:module:utility.*safe-ops.*)$'
+      replace: '\1'
+
+- name: Adding fzf-prezto configuration to zpreztorc
+  lineinfile:
+    path: "/home/{{ system.user.name }}/.zpreztorc"
+    line: "{{ item }}"
+  with_items:
+    - "zstyle ':prezto:module:fzf' completion 'yes'"
+    - "zstyle ':prezto:module:fzf' key-bindings 'yes'"
+    - "zstyle ':prezto:module:fzf' height '30%'"
+    - "zstyle ':prezto:module:fzf' tmux 'yes'"

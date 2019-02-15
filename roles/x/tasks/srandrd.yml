@@ -1,0 +1,10 @@
+---
+
+- name: Install srandrd
+  aur:
+    name: srandrd
+    user: "{{ system.user.name }}"
+    dir: "/home/{{ system.user.name }}/{{ config.aur.dir }}"
+  tags:
+    - aur
+    - srandrd

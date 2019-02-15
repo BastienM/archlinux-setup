@@ -1,0 +1,7 @@
+---
+
+- name: Configuring GNOME Online Accounts integration
+  pacman:
+    name: gvfs-goa
+    state: "present"
+  when: "config.gnome.online_accounts_support"

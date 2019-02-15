@@ -1,0 +1,90 @@
+---
+
+- hosts: localhost
+  become: True
+  pre_tasks:
+    - name: Clean workspace
+      file:
+        path: group_vars/all
+        state: absent
+    - name: Convert variable file from toml to yaml
+      command: remarshal -i group_vars/all.toml -if toml -of yaml -o group_vars/all
+  roles:
+    -
+      role: base
+      tags:
+        - base
+    -
+      role: filesystems
+      tags:
+        - filesystems
+    -
+      role: mirrorlist
+      tags:
+        - mirrorlist
+    -
+      role: microcode
+      tags:
+        - microcode
+      when: "'GenuineIntel' in ansible_processor"
+    -
+      role: ssd
+      tags:
+        - ssd
+      when: system.storage.os.ssd == True
+    -
+      role: sound
+      tags:
+        - sound
+    -
+      role: networkmanager
+      tags:
+        - networkmanager
+    -
+      role: bluetooth
+      tags:
+        - bluetooth
+    -
+      role: laptop
+      tags:
+        - laptop
+    -
+      role: fonts
+      tags:
+        - fonts
+    -
+      role: x
+      tags:
+        - x
+    -
+      role: sddm
+      tags:
+        - sddm
+    -
+      role: gnome
+      tags:
+        - gnome
+    -
+      role: editors
+      tags:
+        - editors
+    -
+      role: yubikey
+      tags:
+        - yubikey
+    -
+      role: gnupg
+      tags:
+        - gnupg
+    -
+      role: zprezto
+      tags:
+        - zprezto
+    -
+      role: python
+      tags:
+        - python
+  vars_prompt:
+    - name: user_password
+      prompt: "Enter password for the new user"
+      default: 1234test

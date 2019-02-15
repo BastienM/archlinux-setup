@@ -1,0 +1,21 @@
+function load-ssh {
+    SSHKEYS_PATH="${HOME}/.ssh"
+    key_path=$(find $SSHKEYS_PATH -name $1)
+
+    if [[ ! -z "${key_path}" ]]; then
+        ssh-add ${key_path}
+    else
+        echo "Unable to find key: ${1}"
+    fi
+}
+
+function aws-set() {
+  profile="${1:-default}"
+  case "$profile" in
+        # prod* ) aws-mfa --device arn:aws:iam::556593845588:mfa/bastien.mennesson@ogury.co --profile ${profile} ${2};;
+        * ) echo "Unrecognized AWS account env";;
+  esac
+  export AWS_PROFILE="${profile}"
+  export AWS_DEFAULT_REGION="eu-west-1"
+  export AWS_REGION="eu-west-1"
+}

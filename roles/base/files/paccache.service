@@ -1,0 +1,9 @@
+[Unit]
+Description=Removes old pacman files
+
+[Service]
+Type=oneshot
+IOSchedulingClass=idle
+CPUSchedulingPolicy=idle
+ExecStart=/usr/bin/paccache -r
+ExecStart=/usr/bin/paccache -ruk0

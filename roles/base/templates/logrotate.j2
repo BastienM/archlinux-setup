@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+/home/{{ system.user.name }}/{{ system.logs.users.dir }}/*.log {
+    missingok
+    noolddir
+    {% if system.logs.users.rotate is defined %}rotate {{ system.logs.users.rotate }}
+    {% endif %}
+}

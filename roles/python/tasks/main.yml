@@ -1,0 +1,8 @@
+---
+
+- name: Install pyenv
+  git:
+    repo: https://github.com/pyenv/pyenv.git
+    dest: "/home/{{ system.user.name }}/.pyenv"
+  become: yes
+  become_user: "{{ system.user.name }}"

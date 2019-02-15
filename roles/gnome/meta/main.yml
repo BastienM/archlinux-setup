@@ -1,0 +1,6 @@
+---
+
+dependencies:
+  - role: x
+  - role: sddm
+  - role: networkmanager

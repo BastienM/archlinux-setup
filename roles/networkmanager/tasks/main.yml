@@ -1,0 +1,37 @@
+---
+
+- name: Install NetworkManager and dependencies
+  pacman:
+    name: [ "networkmanager", "networkmanager-openvpn", "network-manager-applet", "xfce4-notifyd", "gnome-keyring" ]
+    state: present
+
+- name: Push connectivity check config
+  template:
+    src: connectivity.conf.j2
+    dest: /etc/NetworkManager/conf.d/20-connectivity.conf
+  when: system.network.manager.conn_check is defined
+
+- name: Enable and start NetworkManager
+  service:
+    name: NetworkManager.service
+    enabled: yes
+    state: started
+
+- name: Enable and start NetworkManager dispatcher
+  service:
+    name: NetworkManager-dispatcher.service
+    enabled: yes
+    state: started
+
+- name: Format DNS servers for each connections to simple space-separated string
+  set_fact:
+    "{{ item.name | replace(' ', '_') | lower }}": "{{ item.dns.servers | map(attribute='ip_address') | list | join(' ') }}"
+  with_items:
+    - "{{ system.network.connections }}"
+
+- name: Setup global DNS servers
+  shell:
+    cmd: "nmcli con mod {{ item.name }} ipv4.dns '{{ hostvars['localhost'][item.name | replace(' ', '_') | lower] }}'"
+  with_items:
+    - "{{ system.network.connections }}"
+  check_mode: yes

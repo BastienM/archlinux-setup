@@ -1,0 +1,196 @@
+[system]
+type = "laptop" # or 'desktop'
+hostname = "nessus"
+bootloader = "systemd-boot"
+
+  [system.kernel]
+    boot_options = [
+      "quiet",
+      "consoleblank=60",
+      "i915.enable_psr=2"
+    ]
+
+  [system.storage]
+    [system.storage.os]
+      ssd  = false
+      name = "/dev/vda"
+
+  [system.network]
+    [system.network.manager]
+      [system.network.manager.conn_check]
+        interval = 0
+
+    [[system.network.connections]]
+    interface = "ens2"
+    name      = "Wired connection 1"
+
+      [system.network.connections.dns]
+        [[system.network.connections.dns.servers]]
+          name = "Cloudflare (main)"
+          ip_address = "1.1.1.1"
+
+        [[system.network.connections.dns.servers]]
+          name = "Cloudflare (alt)"
+          ip_address = "1.0.0.1"
+
+        [[system.network.connections.dns.servers]]
+          name = "Quad (main)"
+          ip_address = "9.9.9.9"
+
+    [[system.network.connections]]
+    interface = "ens3"
+    name      = "Wired connection 3"
+
+      [system.network.connections.dns]
+        [[system.network.connections.dns.servers]]
+          name = "Cloudflare (main)"
+          ip_address = "1.1.1.1"
+
+        [[system.network.connections.dns.servers]]
+          name = "Cloudflare (alt)"
+          ip_address = "1.0.0.1"
+
+        [[system.network.connections.dns.servers]]
+          name = "Quad (main)"
+          ip_address = "9.9.9.9"
+
+  [system.bluetooth]
+    disabled = false
+
+  [system.fingerprint]
+    disabled = true
+
+  [system.journal]
+    max_size = "500M"
+
+  [system.user]
+    name  = "bastien"
+    uid   = 1001
+    group = "bastien"
+    shell = "/usr/bin/zsh"
+    email = "bastien.mennesson@pm.me"
+
+  [system.logs]
+    [system.logs.users]
+    dir = "log"
+    rotate = 8
+
+# /[system]
+
+[config]
+  [config.aur]
+  dir = ".aur"
+
+  [config.editor]
+  default = "vim"
+
+  [config.gnome]
+  online_accounts_support = false
+
+    [config.gnome.gnome_shell]
+    extensions_support = true
+    top_left_hot_corner_disabled = true
+
+    [config.gnome.gtk]
+    dark_variant = true
+
+    [config.gnome.theme]
+    name = "Qogir"
+
+    [config.gnome.icon]
+    name = "Korla"
+
+    [config.gnome.font]
+    name = ""
+
+  [config.gnupg]
+  enable_agent = true
+  emulate_ssh  = true
+
+  [config.sddm]
+    [config.sddm.chili]
+    background = "https://nextcloud.bastienm.io/s/95EopqZR7n8Jw4e"
+      [config.sddm.chili.screen]
+      width  = 3840
+      height = 2160
+
+  [config.zsh]
+  history_size = 100000
+  prompt_theme = "spaceship"
+  pacman_frontend = "yay"
+
+
+# /[config]
+
+[packages]
+  aur = [
+    "yay",
+    "downgrade"
+  ]
+  base = [
+    "base-devel",
+    "pacman-contrib",
+    "fwupd",
+    "dmidecode",
+    "tmux",
+    "git",
+    "rsync",
+    "glances",
+    "coreutils",
+    "moreutils",
+    "dateutils",
+    "bc",
+    "ranger",
+    "strace",
+    "lsof",
+    "sysstat",
+    "tig",
+    "pv",
+    "minicom",
+    "jq",
+    "screen",
+    "units",
+    "snapper"
+  ]
+  editors = [
+    "vim",
+    "atom",
+    "code"
+  ]
+  fs  = [
+    "dosfstools",
+    "ntfs-3g",
+    "exfat-utils",
+    "btrfs-progs"
+  ]
+  gpu = [ "libva-intel-driver" ]
+
+# /[packages]
+
+[fonts]
+  base = [
+    "terminus-font",
+    "cantarell-fonts",
+    "noto-fonts",
+    "ttf-dejavu",
+    "ttf-liberation",
+    "gsfonts",
+    "tex-gyre-fonts",
+    "ttf-droid",
+    "ttf-ubuntu-font-family",
+    "ttf-inconsolata"
+  ]
+  aur = [
+    "ttf-signika",
+    "ttf-quintessential",
+    "ttf-oswald",
+    "ttf-opensans",
+    "ttf-merriweather-sans",
+    "ttf-merriweather",
+    "ttf-carlito",
+    "ttf-caladea",
+    "ttf-courier-prime",
+    "ttf-heuristica"
+  ]
+
+# /[fonts]

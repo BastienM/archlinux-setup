@@ -1,0 +1,33 @@
+---
+
+- include: tlp.yml
+
+- name: Copy touchpad configuration file
+  copy:
+    src: 30-touchpad.conf
+    dest: /etc/X11/xorg.conf.d/30-touchpad.conf
+  tags:
+    - libinput
+
+- name: Copy logind configuration file
+  copy:
+    src: logind.conf
+    dest: /etc/systemd/logind.conf
+
+- name: Install light
+  pacman:
+    name: light
+    state: present
+
+- name: Install powertop
+  pacman:
+    name: powertop
+    state: present
+
+- name: Install powerstat
+  aur:
+    name: powerstat-git
+    user: "{{ system.user.name }}"
+    dir: "/home/{{ system.user.name }}/{{ config.aur.dir }}"
+  tags:
+    - aur

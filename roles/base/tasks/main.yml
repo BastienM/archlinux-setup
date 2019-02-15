@@ -1,0 +1,14 @@
+---
+
+- name: Set the hostname
+  hostname:
+    name: '{{ system.hostname }}'
+  ignore_errors: yes
+  when: hostname is defined
+
+- include: pacman.yml
+- include: shell.yml
+- include: user.yml
+- include: sudo.yml
+- include: packages.yml
+- include: journal.yml

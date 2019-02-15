@@ -1,0 +1,5 @@
+---
+dependencies:
+  - { role: virtualenv }
+  - { role: nmtrust }
+  - { role: backitup }

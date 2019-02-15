@@ -1,0 +1,3 @@
+---
+- name: Install ledger
+  pacman: name=ledger state=present

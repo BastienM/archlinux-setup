@@ -1,0 +1,13 @@
+---
+- name: Install Viking
+  pacman: name=viking state=present
+
+- name: Install gpxpy
+  aur: name=python-gpxpy user={{ user.name }}
+  tags:
+    - aur
+
+- name: Install OpenCPN
+  aur: name=opencpn user={{ user.name }}
+  tags:
+    - aur

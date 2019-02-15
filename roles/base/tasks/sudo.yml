@@ -1,0 +1,24 @@
+---
+
+- name: Install sudo
+  pacman:
+    name: sudo
+    state: present
+  tags:
+    - sudo
+
+- name: Add user to wheel group
+  user:
+    name: "{{ system.user.name }}"
+    groups: wheel
+    append: yes
+  tags:
+    - sudo
+    - user
+
+- name: Enable wheel group in sudo
+  lineinfile:
+    path: /etc/sudoers
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) ALL'
+    validate: 'visudo -cf %s'
