@@ -50,14 +50,12 @@ $ cd /mnt
 
 # create subvolumes
 $ btrfs subvolume create @
-$ mkdir -p @/{/home, /.snapshots, /tmp, /var, /var/tmp, /var/cache/pacman/pkg}
+$ mkdir -p @/{/home, /.snapshots, /tmp, /var}
 
 $ btrfs subvolume create @home
 $ btrfs subvolume create @snapshots
 $ btrfs subvolume create @tmp
 $ btrfs subvolume create @var
-$ btrfs subvolume create @var-tmp
-$ btrfs subvolume create @var-pkg
 
 umount -R /mnt
 ```
@@ -71,8 +69,6 @@ $ mount -o compress=lzo,space_cache,noatime,ssd,subvol=@home /dev/YOUR_DEVICEp2 
 $ mount -o compress=lzo,space_cache,noatime,ssd,subvol=@snapshots /dev/YOUR_DEVICEp2 /mnt/.snapshots
 $ mount -o compress=lzo,space_cache,noatime,ssd,subvol=@tmp /dev/YOUR_DEVICEp2 /mnt/tmp
 $ mount -o compress=lzo,space_cache,noatime,ssd,subvol=@var /dev/YOUR_DEVICEp2 /mnt/var
-$ mount -o compress=lzo,space_cache,noatime,ssd,subvol=@var-rmp /dev/YOUR_DEVICEp2 /mnt/var/tmp
-$ mount -o compress=lzo,space_cache,noatime,ssd,subvol=@var-cache /dev/YOUR_DEVICEp2 /mnt/var/cache/pacman/pkg
 
 # then the EFI partition
 $ mkdir /mnt/boot
@@ -82,7 +78,7 @@ $ mount /dev/YOUR_DEVICEp1 /mnt/boot
 $ pacstrap /mnt base base-devel btrfs-progs vim git
 
 # Copying the current mounting schema
-$ genfstab -Up /mnt >>/mnt/etc/fstab
+$ genfstab -Up /mnt >> /mnt/etc/fstab
 ```
 
 #### Chrooting into our install
