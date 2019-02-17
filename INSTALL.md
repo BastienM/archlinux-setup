@@ -50,7 +50,7 @@ $ cd /mnt
 
 # create subvolumes
 $ btrfs subvolume create @
-$ mkdir -p @/{/home, /.snapshots, /tmp, /var}
+$ mkdir -p @{/home, /.snapshots, /tmp, /var}
 
 $ btrfs subvolume create @home
 $ btrfs subvolume create @snapshots
