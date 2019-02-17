@@ -95,9 +95,6 @@ $ arch-chroot /mnt
 $ echo LANG=en_US.UTF-8 > /etc/locale.conf
 # Then generating our choosen locales ...
 $ locale-gen
-
-# and persisting it
-$ echo 'LANG=en_US.UTF-8' > /etc/locale.conf
 ```
 
 ##### Clock
