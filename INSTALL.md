@@ -50,12 +50,13 @@ $ cd /mnt
 
 # create subvolumes
 $ btrfs subvolume create @
-$ mkdir -p @{/home, /.snapshots, /tmp, /var}
+$ mkdir -p @{/home,/.snapshots,/tmp,/var,/swap}
 
 $ btrfs subvolume create @home
 $ btrfs subvolume create @snapshots
 $ btrfs subvolume create @tmp
 $ btrfs subvolume create @var
+$ btrfs subvolume create @swap
 
 umount -R /mnt
 ```
@@ -69,6 +70,7 @@ $ mount -o compress=lzo,space_cache,noatime,ssd,subvol=@home /dev/YOUR_DEVICEp2 
 $ mount -o compress=lzo,space_cache,noatime,ssd,subvol=@snapshots /dev/YOUR_DEVICEp2 /mnt/.snapshots
 $ mount -o compress=lzo,space_cache,noatime,ssd,subvol=@tmp /dev/YOUR_DEVICEp2 /mnt/tmp
 $ mount -o compress=lzo,space_cache,noatime,ssd,subvol=@var /dev/YOUR_DEVICEp2 /mnt/var
+$ mount -o compress=lzo,space_cache,noatime,ssd,subvol=@swap /dev/YOUR_DEVICEp2 /mnt/swap
 
 # then the EFI partition
 $ mkdir /mnt/boot
